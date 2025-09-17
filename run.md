@@ -24,10 +24,72 @@
 
     The server will start on `http://localhost:8080`.
 
-## Example Request
+## Example Requests
 
-To retrieve a product, send a GET request to the `/products/{id}` endpoint. For example:
+Here are some example `curl` commands to interact with the API:
+
+### Get All Products (with pagination)
 
 ```sh
-cURL -X GET http://localhost:8080/products/1
+curl -X GET "http://localhost:8080/products?limit=2&offset=0"
+```
+
+### Get Product by ID
+
+```sh
+curl -X GET http://localhost:8080/products/1
+```
+
+### Create a New Product
+
+```sh
+curl -X POST http://localhost:8080/products \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "New Keyboard",
+    "image_url": "/images/keyboard.png",
+    "description": "Mechanical keyboard with RGB lighting",
+    "price": 120.00,
+    "rating": 4.7,
+    "specifications": {
+      "Layout": "US ANSI",
+      "Switches": "Cherry MX Brown"
+    }
+  }'
+```
+
+### Update an Existing Product (PUT)
+
+```sh
+curl -X PUT http://localhost:8080/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": 1,
+    "name": "Updated Laptop",
+    "image_url": "/images/updated_laptop.png",
+    "description": "High-performance laptop with upgraded specs",
+    "price": 1300.00,
+    "rating": 4.6,
+    "specifications": {
+      "RAM": "32GB",
+      "Storage": "1TB SSD"
+    }
+  }'
+```
+
+### Partially Update an Existing Product (PATCH)
+
+```sh
+curl -X PATCH http://localhost:8080/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "price": 1250.00,
+    "rating": 4.7
+  }'
+```
+
+### Delete a Product
+
+```sh
+curl -X DELETE http://localhost:8080/products/1
 ```

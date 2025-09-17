@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Laptop",
+    "image_url": "/images/laptop.png",
+    "description": "High-performance laptop",
+    "price": 1200.00,
+    "rating": 4.5,
+    "specifications": {
+      "RAM": "16GB",
+      "Storage": "512GB SSD"
+    },
+    "category": "Electronics"
+  },
+  {
+    "id": 2,
+    "name": "Smartphone",
+    "image_url": "/images/smartphone.png",
+    "description": "Latest model smartphone",
+    "price": 800.00,
+    "rating": 4.8,
+    "specifications": {
+      "Camera": "108MP",
+      "Battery": "5000mAh"
+    },
+    "category": "Electronics"
+  },
+  {
+    "id": 3,
+    "name": "Headphones",
+    "image_url": "/images/headphones.png",
+    "description": "Noise-cancelling headphones",
+    "price": 150.00,
+    "rating": 4.2,
+    "specifications": {
+      "Connectivity": "Bluetooth 5.0",
+      "Driver size": "40mm"
+    },
+    "category": "Accessories"
+  }
+]

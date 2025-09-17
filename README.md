@@ -4,9 +4,14 @@ This is a simple RESTful API built with Golang and the Gin framework to provide 
 
 ## API Design
 
-The API exposes a single endpoint to retrieve product information:
+The API exposes the following endpoints for product management:
 
+- `GET /products`: Returns a list of all products with optional pagination (`limit`, `offset`).
 - `GET /products/{id}`: Returns details for a single product.
+- `POST /products`: Creates a new product.
+- `PUT /products/{id}`: Updates an existing product.
+- `PATCH /products/{id}`: Partially updates an existing product.
+- `DELETE /products/{id}`: Deletes a product.
 
 ### Product Model
 
@@ -18,6 +23,7 @@ The `Product` model includes the following fields:
 - `description` (string)
 - `price` (float)
 - `rating` (float)
+- `category` (string)
 - `specifications` (map[string]string)
 
 ## Setup and Running
@@ -43,5 +49,5 @@ go test -v ./...
 ## Architectural Decisions
 
 - **Framework:** Gin was chosen for its lightweight nature and high performance.
-- **Data Storage:** Product data is stored in an in-memory slice to keep the project simple and avoid external dependencies like a database.
-- **Structure:** The project is organized into `internal/handlers` and `internal/models` packages for a clean and scalable structure.
+- **Data Storage:** Product data is stored in an in JSON file to keep the project simple and avoid external dependencies like a database.
+- **Structure:** The project is organized into `internal/` packages for a clean and scalable structure.
