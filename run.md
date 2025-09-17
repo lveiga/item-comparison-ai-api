@@ -19,7 +19,7 @@
     Execute the following command to start the API server:
 
     ```sh
-    go run main.go
+    go run ./cmd/api
     ```
 
     The server will start on `http://localhost:8080`.

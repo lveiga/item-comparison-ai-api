@@ -9,8 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	"item-comparison-ai-api/handlers"
-	"item-comparison-ai-api/models"
+	"item-comparison-ai-api/internal/handlers"
+	"item-comparison-ai-api/internal/models"
 )
 
 // setupRouter initializes the Gin router for testing

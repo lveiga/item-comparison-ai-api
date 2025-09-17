@@ -67,8 +67,8 @@
 > **Final Output:** Generate the complete Go code for the unit tests, ready to be added to the project.
 ``` 
 
-#Prompt to Integration Test
-## 
+# Prompt to Integration Test
+## This prompt focuses on testing the complete API flow, ensuring that the server and endpoints work together correctly.
 
 ```
 > I need to create integration tests for my Golang API built with the Gin framework. The tests should cover the full API endpoint `/products/{id}`.
@@ -95,4 +95,28 @@
 >    * Include inline comments to explain the test logic.
 >
 > **Final Output:** Generate the complete Go code for the integration tests.
+```
+
+
+
+# Prompt to Restructure Go Project Folders
+## This prompt instructs Gemini to reorganize the project so that it follows Go best practices, separating internal logic, the application entry point, and integration tests.
+
+```
+> I need to refactor my Golang API project to follow a more scalable and idiomatic project layout.
+
+> **Current Project Structure:**
+> ```
+> /item-comparison-ai-api
+> ├── main.go
+> ├── handlers/
+> ├── models/
+> ├── integration_test.go
+> ```
+
+> **Target Structure:**
+> Refactor the project to follow the standard Go project layout.
+>
+> 1.  **`cmd/` folder:** Move the `main.go` file. The `main.go` file should be the only entry point for the application.
+> 2.  **`internal/ folder:** Move folders handlers and models into internal/. and create a folder for file integration_test.go
 ```

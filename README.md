@@ -29,7 +29,7 @@ To set up and run the project, please see the instructions in `run.md`.
 To run the unit tests for the handlers, execute the following command:
 
 ```sh
-go test ./handlers
+go test ./internal/handlers
 ```
 
 ## Running Integration Tests
@@ -44,4 +44,4 @@ go test -v ./...
 
 - **Framework:** Gin was chosen for its lightweight nature and high performance.
 - **Data Storage:** Product data is stored in an in-memory slice to keep the project simple and avoid external dependencies like a database.
-- **Structure:** The project is organized into `handlers` and `models` packages for a clean and scalable structure.
+- **Structure:** The project is organized into `internal/handlers` and `internal/models` packages for a clean and scalable structure.

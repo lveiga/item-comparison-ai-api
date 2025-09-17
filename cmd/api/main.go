@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"item-comparison-ai-api/handlers"
+	"item-comparison-ai-api/internal/handlers"
 )
 
 func main() {

@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"item-comparison-ai-api/models"
+	"item-comparison-ai-api/internal/models"
 )
 
 // products slice to seed product data.

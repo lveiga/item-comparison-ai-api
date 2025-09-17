@@ -6,9 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"item-comparison-ai-api/internal/models"
+
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	"item-comparison-ai-api/models"
 )
 
 func TestGetProduct(t *testing.T) {
