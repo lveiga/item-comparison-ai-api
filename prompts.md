@@ -37,7 +37,7 @@
 ```
 
 
-# Propt to Unit Test
+# Prompt to Unit Test
 ## This prompt is focused on testing internal logic and functions in isolation, without the need to run the server.
 ```
 > I need to create unit tests for my Golang API. The project uses the Gin framework. I want to test the `GetProductByID` handler function, which retrieves a product from an in-memory map based on an ID.
@@ -67,3 +67,32 @@
 > **Final Output:** Generate the complete Go code for the unit tests, ready to be added to the project.
 ``` 
 
+#Prompt to Integration Test
+## 
+
+```
+> I need to create integration tests for my Golang API built with the Gin framework. The tests should cover the full API endpoint `/products/{id}`.
+
+>
+> **Task Breakdown:**
+> 1. **Test Case 1: Valid API Call.**
+>    * Start a real HTTP server in a separate goroutine.
+>    * Use `net/http` to make an actual GET request to the `/products/1` endpoint.
+>    * Assert that the HTTP status code is `200 OK`.
+>    * Verify that the JSON response body contains the correct product details.
+>
+> 2. **Test Case 2: Endpoint Not Found.**
+>    * Make a GET request to a non-existent endpoint (e.g., `/api/v1/products/1`).
+>    * Assert that the HTTP status code is `404 Not Found`.
+>    * Verify that the response body indicates the route was not found.
+>
+> 3. **Test Setup and Teardown:**
+>    * Use a testing `main` function or a test suite to set up and tear down the server.
+>    * Use `t.Parallel()` to allow tests to run in parallel.
+>
+> 4. **Code Structure:**
+>    * Organize the tests in a separate file (e.g., `integration_test.go`).
+>    * Include inline comments to explain the test logic.
+>
+> **Final Output:** Generate the complete Go code for the integration tests.
+```

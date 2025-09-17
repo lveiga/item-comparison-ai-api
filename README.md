@@ -32,6 +32,14 @@ To run the unit tests for the handlers, execute the following command:
 go test ./handlers
 ```
 
+## Running Integration Tests
+
+To run the integration tests, execute the following command from the root of the project:
+
+```sh
+go test -v ./...
+```
+
 ## Architectural Decisions
 
 - **Framework:** Gin was chosen for its lightweight nature and high performance.
