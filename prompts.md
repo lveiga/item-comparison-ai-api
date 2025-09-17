@@ -35,3 +35,35 @@
 >
 > **Final Output:** Provide all the necessary code and documentation in separate code blocks. Do not include any conversational text, just the files and their content.
 ```
+
+
+# Propt to Unit Test
+## This prompt is focused on testing internal logic and functions in isolation, without the need to run the server.
+```
+> I need to create unit tests for my Golang API. The project uses the Gin framework. I want to test the `GetProductByID` handler function, which retrieves a product from an in-memory map based on an ID.
+
+>
+> **Task Breakdown:**
+> 1. **Test Case 1: Success Scenario.**
+>    * Simulate a GET request with a valid product ID (e.g., `1`).
+>    * Assert that the HTTP status code is `200 OK`.
+>    * Assert that the JSON response body matches the expected product data.
+>
+> 2. **Test Case 2: Product Not Found.**
+>    * Simulate a GET request with an invalid product ID that does not exist (e.g., `999`).
+>    * Assert that the HTTP status code is `404 Not Found`.
+>    * Assert that the JSON response body contains an appropriate error message.
+>
+> 3. **Test Case 3: Invalid ID Format.**
+>    * Simulate a GET request with an invalid ID format (e.g., a string like `"abc"`).
+>    * Assert that the HTTP status code is `400 Bad Request`.
+>    * Assert that the JSON response body contains a message indicating the invalid ID.
+>
+> 4. **Code Structure:**
+>    * Use the `net/http/httptest` package to create a mock HTTP server and recorder.
+>    * Organize the tests in a separate file (e.g., `handlers_test.go`).
+>    * Include inline comments to explain the purpose of each test case.
+>
+> **Final Output:** Generate the complete Go code for the unit tests, ready to be added to the project.
+``` 
+

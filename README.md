@@ -24,6 +24,14 @@ The `Product` model includes the following fields:
 
 To set up and run the project, please see the instructions in `run.md`.
 
+## Running Unit Tests
+
+To run the unit tests for the handlers, execute the following command:
+
+```sh
+go test ./handlers
+```
+
 ## Architectural Decisions
 
 - **Framework:** Gin was chosen for its lightweight nature and high performance.
