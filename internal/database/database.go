@@ -8,7 +8,7 @@ import (
 	"item-comparison-ai-api/internal/models"
 )
 
-var DataFile = "data.json"
+var DataFile = os.Getenv("DATA_FILE_PATH")
 
 var (
 	mu sync.Mutex // Mutex to protect access to the data file

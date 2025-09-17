@@ -16,10 +16,10 @@
 
 2.  **Run the Application:**
 
-    Execute the following command to start the API server:
+    To run the application locally, you need to set the `DATA_FILE_PATH` environment variable.
 
     ```sh
-    go run ./cmd/api
+    DATA_FILE_PATH=data.json go run ./cmd/api
     ```
 
     The server will start on `http://localhost:8080`.
@@ -93,3 +93,23 @@ curl -X PATCH http://localhost:8080/products/1 \
 ```sh
 curl -X DELETE http://localhost:8080/products/1
 ```
+
+## Docker
+
+To build and run the application using Docker, follow these steps:
+
+1.  **Build the Docker Image:**
+
+    ```sh
+    docker build -t item-comparison-ai-api .
+    ```
+
+2.  **Run the Docker Container:**
+
+    The `DATA_FILE_PATH` environment variable is set within the Dockerfile to `/root/data.json`.
+
+    ```sh
+    docker run -p 8080:8080 item-comparison-ai-api
+    ```
+
+    The application will be accessible at `http://localhost:8080`.
