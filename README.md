@@ -108,3 +108,6 @@ Implements the repository pattern to abstract data access. It contains a base im
 ### `internal/routes`
 
 Defines all the API's endpoints. It currently contains the CRUD routes for the product resource, mapping each route to its respective handler.
+
+## Github
+https://github.com/lveiga/item-comparison-ai-api
