@@ -23,8 +23,6 @@ var (
 	mu sync.Mutex // Mutex to protect access to the data file
 )
 
-var dataFilePath = os.Getenv("DATA_FILE_PATH")
-
 // Load reads  from the data.json file
 func (c *Client) Load() ([]byte, error) {
 	mu.Lock()
