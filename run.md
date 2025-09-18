@@ -3,6 +3,17 @@
 ## Prerequisites
 
 - Go (version 1.18 or higher)
+- Docker (optional)
+
+## Environment Variables
+
+Before running the application, create a `.env` file in the root of the project with the following content:
+
+```
+DATA_FILE_PATH=../../data.json
+BIND_ADDR=:8080
+ENVIRONMENT=local
+```
 
 ## Compilation and Execution
 
@@ -16,13 +27,13 @@
 
 2.  **Run the Application:**
 
-    To run the application locally, you need to set the `DATA_FILE_PATH` environment variable.
+    To run the application locally, execute the following command. It will automatically load the variables from the `.env` file.
 
     ```sh
-    DATA_FILE_PATH=data.json go run ./cmd/api
+    go run ./cmd/api
     ```
 
-    The server will start on `http://localhost:8080`.
+    The server will start on the address specified by `BIND_ADDR` (e.g., `http://localhost:8080`).
 
 ## Example Requests
 
@@ -106,10 +117,10 @@ To build and run the application using Docker, follow these steps:
 
 2.  **Run the Docker Container:**
 
-    The `DATA_FILE_PATH` environment variable is set within the Dockerfile to `/root/data.json`.
+    You can pass the environment variables directly or use a `.env` file.
 
     ```sh
-    docker run -p 8080:8080 item-comparison-ai-api
+    docker run -p 8080:8080 --env-file .env item-comparison-ai-api
     ```
 
     The application will be accessible at `http://localhost:8080`.
