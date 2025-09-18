@@ -30,7 +30,8 @@ ENVIRONMENT=local
     To run the application locally, execute the following command. It will automatically load the variables from the `.env` file.
 
     ```sh
-    go run ./cmd/api
+    cd cmd/api
+    go run .
     ```
 
     The server will start on the address specified by `BIND_ADDR` (e.g., `http://localhost:8080`).

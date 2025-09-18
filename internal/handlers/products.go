@@ -44,7 +44,7 @@ func (h *ProductHandler) GetProduct(c *gin.Context) {
 	HandleError(c, ErrNotFound)
 }
 
-// GetAllProducts retrieves all products with optional pagination
+// GetAllProducts retrieves all products with optional pagination and filtering
 func (h *ProductHandler) GetAllProducts(c *gin.Context) {
 	products, err := h.repo.LoadProducts()
 	if err != nil {
@@ -52,6 +52,19 @@ func (h *ProductHandler) GetAllProducts(c *gin.Context) {
 		return
 	}
 
+	// Filter by category if the query parameter is provided
+	category := c.Query("category")
+	if category != "" {
+		var filteredProducts []models.Product
+		for _, p := range products {
+			if p.Category == category {
+				filteredProducts = append(filteredProducts, p)
+			}
+		}
+		products = filteredProducts
+	}
+
+	// Pagination
 	limitStr := c.DefaultQuery("limit", "10")
 	offsetStr := c.DefaultQuery("offset", "0")
 
