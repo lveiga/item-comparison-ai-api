@@ -4,33 +4,33 @@ import (
 	"net/http"
 	"strconv"
 
-	"item-comparison-ai-api/internal/database"
 	"item-comparison-ai-api/internal/models"
+	"item-comparison-ai-api/internal/repositories"
 
 	"github.com/gin-gonic/gin"
 )
 
 // ProductHandler holds the database client
 type ProductHandler struct {
-	DB database.DB
+	repo repositories.ProductRepository
 }
 
 // NewProductHandler creates a new ProductHandler
-func NewProductHandler(db database.DB) *ProductHandler {
-	return &ProductHandler{DB: db}
+func NewProductHandler(repository repositories.ProductRepository) *ProductHandler {
+	return &ProductHandler{repo: repository}
 }
 
 // GetProduct retrieves a product by its ID
 func (h *ProductHandler) GetProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		HandleError(c, ErrInvalidProductID)
+		HandleError(c, ErrInvalidID)
 		return
 	}
 
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
@@ -41,14 +41,14 @@ func (h *ProductHandler) GetProduct(c *gin.Context) {
 		}
 	}
 
-	HandleError(c, ErrProductNotFound)
+	HandleError(c, ErrNotFound)
 }
 
 // GetAllProducts retrieves all products with optional pagination
 func (h *ProductHandler) GetAllProducts(c *gin.Context) {
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
@@ -88,17 +88,17 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 		return
 	}
 
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
-	newProduct.ID = h.DB.GetNextID(products)
+	newProduct.ID = h.repo.GetNextID(products)
 	products = append(products, newProduct)
 
-	if err := h.DB.SaveProducts(products); err != nil {
-		HandleError(c, ErrFailedToSaveProducts)
+	if err := h.repo.SaveProducts(products); err != nil {
+		HandleError(c, ErrFailedToSave)
 		return
 	}
 
@@ -109,7 +109,7 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		HandleError(c, ErrInvalidProductID)
+		HandleError(c, ErrInvalidID)
 		return
 	}
 
@@ -119,9 +119,9 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 		return
 	}
 
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
@@ -136,12 +136,12 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 	}
 
 	if !found {
-		HandleError(c, ErrProductNotFound)
+		HandleError(c, ErrNotFound)
 		return
 	}
 
-	if err := h.DB.SaveProducts(products); err != nil {
-		HandleError(c, ErrFailedToSaveProducts)
+	if err := h.repo.SaveProducts(products); err != nil {
+		HandleError(c, ErrFailedToSave)
 		return
 	}
 
@@ -152,7 +152,7 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 func (h *ProductHandler) PatchProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		HandleError(c, ErrInvalidProductID)
+		HandleError(c, ErrInvalidID)
 		return
 	}
 
@@ -162,9 +162,9 @@ func (h *ProductHandler) PatchProduct(c *gin.Context) {
 		return
 	}
 
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
@@ -207,12 +207,12 @@ func (h *ProductHandler) PatchProduct(c *gin.Context) {
 	}
 
 	if !found {
-		HandleError(c, ErrProductNotFound)
+		HandleError(c, ErrNotFound)
 		return
 	}
 
-	if err := h.DB.SaveProducts(products); err != nil {
-		HandleError(c, ErrFailedToSaveProducts)
+	if err := h.repo.SaveProducts(products); err != nil {
+		HandleError(c, ErrFailedToSave)
 		return
 	}
 
@@ -223,13 +223,13 @@ func (h *ProductHandler) PatchProduct(c *gin.Context) {
 func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		HandleError(c, ErrInvalidProductID)
+		HandleError(c, ErrInvalidID)
 		return
 	}
 
-	products, err := h.DB.LoadProducts()
+	products, err := h.repo.LoadProducts()
 	if err != nil {
-		HandleError(c, ErrFailedToLoadProducts)
+		HandleError(c, ErrFailedToLoad)
 		return
 	}
 
@@ -243,12 +243,12 @@ func (h *ProductHandler) DeleteProduct(c *gin.Context) {
 	}
 
 	if !found {
-		HandleError(c, ErrProductNotFound)
+		HandleError(c, ErrNotFound)
 		return
 	}
 
-	if err := h.DB.SaveProducts(products); err != nil {
-		HandleError(c, ErrFailedToSaveProducts)
+	if err := h.repo.SaveProducts(products); err != nil {
+		HandleError(c, ErrFailedToSave)
 		return
 	}
 

@@ -1,70 +1,35 @@
 package database
 
 import (
-	"encoding/json"
 	"os"
-	"sync"
-
-	"item-comparison-ai-api/internal/models"
 )
 
-var DataFile = os.Getenv("DATA_FILE_PATH")
-
-var (
-	mu sync.Mutex // Mutex to protect access to the data file
-)
-
-// DB is the interface for the database
-type DB interface {
-	LoadProducts() ([]models.Product, error)
-	SaveProducts([]models.Product) error
-	GetNextID([]models.Product) int
+// FileStore defines the interface for file operations
+type FileStore interface {
+	Read(filename string) ([]byte, error)
+	Write(filename string, data []byte, perm os.FileMode) error
+	CheckLiveness(filename string) error
 }
 
-// Client is the implementation of the DB interface
-type Client struct{}
+func NewClient(fileStore FileStore) *Database {
+	return &Database{}
+}
 
-// LoadProducts reads products from the data.json file
-func (c *Client) LoadProducts() ([]models.Product, error) {
-	mu.Lock()
-	defer mu.Unlock()
+// Database is an implementation of FileStore that uses os package for file operations
+type Database struct{}
 
-	data, err := os.ReadFile(DataFile)
+func (fs *Database) Read(filename string) ([]byte, error) {
+	return os.ReadFile(filename)
+}
+
+func (fs *Database) Write(filename string, data []byte, perm os.FileMode) error {
+	return os.WriteFile(filename, data, perm)
+}
+
+func (conn *Database) CheckLiveness(filename string) error {
+	_, err := os.ReadFile(filename)
 	if err != nil {
-		if os.IsNotExist(err) {
-			return []models.Product{}, nil // Return empty slice if file doesn't exist
-		}
-		return nil, err
+		panic(err)
 	}
-
-	var products []models.Product
-	if err := json.Unmarshal(data, &products); err != nil {
-		return nil, err
-	}
-
-	return products, nil
-}
-
-// SaveProducts writes products to the data.json file
-func (c *Client) SaveProducts(products []models.Product) error {
-	mu.Lock()
-	defer mu.Unlock()
-
-	data, err := json.MarshalIndent(products, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	return os.WriteFile(DataFile, data, 0644)
-}
-
-// GetNextID calculates the next available ID for a new product
-func (c *Client) GetNextID(products []models.Product) int {
-	maxID := 0
-	for _, p := range products {
-		if p.ID > maxID {
-			maxID = p.ID
-		}
-	}
-	return maxID + 1
+	return nil
 }

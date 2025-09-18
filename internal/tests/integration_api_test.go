@@ -9,9 +9,11 @@ import (
 	"os"
 	"testing"
 
+	"item-comparison-ai-api/config"
 	"item-comparison-ai-api/internal/database"
 	"item-comparison-ai-api/internal/handlers"
 	"item-comparison-ai-api/internal/models"
+	"item-comparison-ai-api/internal/repositories"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -25,12 +27,7 @@ func setupTestEnvironment(t *testing.T) func() {
 	tempFileName := tempFile.Name()
 	tempFile.Close()
 
-	// Override the dataFile constant for testing
-	// This is a hack and generally not recommended for production code
-	// but acceptable for isolated testing scenarios.
-	// A better approach for production would be dependency injection.
-	originalDataFile := database.DataFile
-	database.DataFile = tempFileName
+	t.Setenv("DATA_FILE_PATH", tempFileName)
 
 	// Seed initial data
 	initialProducts := []models.Product{
@@ -38,14 +35,17 @@ func setupTestEnvironment(t *testing.T) func() {
 		{ID: 2, Name: "Smartphone", ImageURL: "/images/smartphone.png", Description: "Latest model smartphone", Price: 800.00, Rating: 4.8, Specifications: map[string]string{"Camera": "108MP", "Battery": "5000mAh"}, Category: "Electronics"},
 		{ID: 3, Name: "Headphones", ImageURL: "/images/headphones.png", Description: "Noise-cancelling headphones", Price: 150.00, Rating: 4.2, Specifications: map[string]string{"Connectivity": "Bluetooth 5.0", "Driver size": "40mm"}, Category: "Accessories"},
 	}
-	db := &database.Client{}
-	err = db.SaveProducts(initialProducts)
+	var config = config.New()
+
+	db := database.NewClient(&database.Database{})
+	baseRepo := repositories.NewBaseRepository(db, config)
+	repo := repositories.NewProductRepository(baseRepo)
+	err = repo.SaveProducts(initialProducts)
 	assert.NoError(t, err)
 
 	// Return a cleanup function
 	return func() {
-		os.Remove(tempFileName)              // Clean up the temporary file
-		database.DataFile = originalDataFile // Restore original dataFile
+		os.Remove(tempFileName) // Clean up the temporary file
 	}
 }
 
@@ -53,8 +53,10 @@ func setupTestEnvironment(t *testing.T) func() {
 func setupRouter() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.Default()
-	db := &database.Client{}
-	h := handlers.NewProductHandler(db)
+	db := database.NewClient(&database.Database{})
+	baseRepo := repositories.NewBaseRepository(db, config.New())
+	repo := repositories.NewProductRepository(baseRepo)
+	h := handlers.NewProductHandler(repo)
 	r.GET("/products", h.GetAllProducts)
 	r.GET("/products/:id", h.GetProduct)
 	r.POST("/products", h.CreateProduct)
@@ -228,8 +230,8 @@ func TestIntegrationPatchProduct(t *testing.T) {
 	defer server.Close()
 
 	patchData := map[string]interface{}{
-		"price":  1250.00,
-		"rating": 4.7,
+		"price":    1250.00,
+		"rating":   4.7,
 		"category": "Premium Electronics",
 	}
 	jsonPatch, _ := json.Marshal(patchData)

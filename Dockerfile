@@ -21,7 +21,7 @@ COPY --from=builder /item-comparison-ai-api .
 COPY --from=builder /app/data.json .
 
 ENV DATA_FILE_PATH=/root/data.json
-
+ENV BIND_ADDR=:8080
 EXPOSE 8080
 
 CMD ["./item-comparison-ai-api"]

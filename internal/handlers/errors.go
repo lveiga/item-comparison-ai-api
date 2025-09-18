@@ -22,12 +22,12 @@ func NewError(code int, message string) *Error {
 
 // Error messages
 var (
-	ErrInvalidProductID       = NewError(http.StatusBadRequest, "Invalid product ID")
-	ErrFailedToLoadProducts   = NewError(http.StatusInternalServerError, "Failed to load products")
-	ErrProductNotFound        = NewError(http.StatusNotFound, "Product not found")
+	ErrInvalidID       = NewError(http.StatusBadRequest, "Invalid ID")
+	ErrFailedToLoad   = NewError(http.StatusInternalServerError, "Failed to load")
+	ErrNotFound        = NewError(http.StatusNotFound, "Not found")
 	ErrInvalidLimitParameter  = NewError(http.StatusBadRequest, "Invalid limit parameter")
 	ErrInvalidOffsetParameter = NewError(http.StatusBadRequest, "Invalid offset parameter")
-	ErrFailedToSaveProducts   = NewError(http.StatusInternalServerError, "Failed to save products")
+	ErrFailedToSave   = NewError(http.StatusInternalServerError, "Failed to save")
 	ErrBindJSON               = NewError(http.StatusBadRequest, "Invalid request body")
 )
 

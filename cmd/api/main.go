@@ -1,30 +1,31 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"item-comparison-ai-api/config"
 	"item-comparison-ai-api/internal/database"
-	"item-comparison-ai-api/internal/handlers"
+	"item-comparison-ai-api/internal/logger"
+	"item-comparison-ai-api/internal/routes"
+	"item-comparison-ai-api/internal/server"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Creates a gin router with default middleware:
-	// logger and recovery (crash-free) middleware
-	r := gin.Default()
+	var engine = gin.New()
+	var config = config.New()
+	var loggerAdapter = logger.NewLogger(config.Environment)
+	var logger = loggerAdapter.GetLogger()
+	db := database.NewClient(&database.Database{})
+	if db == nil {
+		logger.Fatal("Failed to create database client")
+	}
+	var server = server.New(config, db, engine, loggerAdapter).
+		WithMiddlewares().
+		WithHealthcheck().
+		WithHandlers("",
+			&routes.ProductRouter{},
+		)
 
-	// Create a new database client
-	db := &database.Client{}
-
-	// Create a new product handler
-	productHandler := handlers.NewProductHandler(db)
-
-	// Define the GET endpoint for retrieving a product by ID
-	r.GET("/products", productHandler.GetAllProducts)
-	r.GET("/products/:id", productHandler.GetProduct)
-	r.POST("/products", productHandler.CreateProduct)
-	r.PUT("/products/:id", productHandler.UpdateProduct)
-	r.PATCH("/products/:id", productHandler.PatchProduct)
-	r.DELETE("/products/:id", productHandler.DeleteProduct)
-
-	// Run the server on port 8080
-	r.Run(":8080")
+	logger.Println("Start Item Comparison AI API...")
+	server.Start()
 }
